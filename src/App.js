@@ -22,11 +22,17 @@ export default function App() {
   }, [repositories]);
 
   async function handleLikeRepository(id) {
-    const repoId = `repositories/${id}/like`;
-    const response = await api.post(repoId);
+    const response = await api.post(`repositories/${id}/like`);
 
-    const repositoryUpdateLike = repositories
-      .map(repository => repository.id === id ? response.data : repository); 
+    const likedRepository = response.data;
+
+    const repositoryUpdateLike = repositories.map(repository => {
+      if (repository.id === id) {
+        return likedRepository;
+      } else {
+        return repository;
+      }
+    }); 
         
     setRepositories(repositoryUpdateLike);
   }
